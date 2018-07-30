@@ -5,18 +5,14 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
-
-window.Vue = require('vue');
+window.Popper = require('popper.js');
 
 /**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
+ * We'll load jQuery and the Bootstrap jQuery plugin which provides support
+ * for JavaScript based Bootstrap features such as modals and tabs. This
+ * code may be modified to fit the specific needs of your application.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+window.$ = window.jQuery = require('jquery');
 
-const app = new Vue({
-    el: '#app'
-});
+require('./bootstrap/bootstrap.js');

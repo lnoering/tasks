@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'TaskController@index');
+Route::get('task/insert', 'TaskController@insert');
+Route::post('task/insertAction', 'TaskController@insertAction');
+
+Route::get('state/insert', 'StateController@insert');
+Route::post('state/insertAction', 'StateController@insertAction');
