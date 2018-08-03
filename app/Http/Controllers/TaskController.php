@@ -13,9 +13,7 @@ class TaskController extends Controller
         //TODO - melhorar a renderizacao de tasks (agrupar elas de forma correta para a view)
         $data = array(
                         'states'=>State::orderBy('position','asc')->get(),
-//                        'states'=>State::all(),
-//                        'tasks'=>Task::all()
-                        'tasks'=>Task::all()
+                        'tasks'=>Task::orderByRaw('updated_at - created_at asc')->get()
                     );
 //        $data = array('tasks'=>Task::all()->groupBy('state.position','asc'));
 
