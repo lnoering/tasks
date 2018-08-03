@@ -1,9 +1,9 @@
 @extends('dashboard')
 
 @section('content')
-    <div>
+    <div class="row">
         @foreach($states as $state)
-            <ul>
+            <ul class="card col-sm-3">
                 <h1>{{$state->name}}</h1>
                 @foreach($tasks as $key => $task)
                     @if($task->state_id == $state->id)
@@ -17,6 +17,11 @@
                 {{ Form::button(__('task.more'),['id'=>'addTask', 'data-id' => $state->id, 'data-url' => URL::to('/').'/task/insert']) }}
             </ul>
         @endforeach
-        {{ Form::button(__('state.more'),['id'=>'addState', 'class' => 'button', 'data-url' => URL::to('/').'/state/insert']) }}
+        <ul class="card col-sm-3">
+            <h1>{{ Form::button(__('state.more'),['id'=>'addState', 'class' => 'button', 'data-url' => URL::to('/').'/state/insert']) }}</h1>
+        </ul>
+        <div id="app">
+
+        </div>
     </div>
 @endsection
