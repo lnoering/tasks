@@ -15,6 +15,7 @@
     </head>
     <body>
         <div class="content">
+            {{Html::script('js/sortable.js')}}
             @yield('content')
         </div>
     </body>

@@ -1,7 +1,7 @@
 @extends('dashboard')
 
 @section('content')
-    <div class="row">
+    <div id="cols" class="row">
         @foreach($states as $state)
             <ul class="card col-sm-3">
                 <h1>{{$state->name}}</h1>
@@ -25,7 +25,9 @@
         </div>
     </div>
     <script type="application/javascript">
-        var el = document.getElementsByClassName('card');
-        var sortable = Sortable.create(el);
+        Sortable.create(cols, {
+            handle: '.card',
+            animation: 150
+        });
     </script>
 @endsection

@@ -1,6 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/resources/assets/js/popper.js": "/resources/assets/js/popper.js",
-    "/resources/assets/js/Sortable.js": "/resources/assets/js/Sortable.js"
+    "/js/sortable.js": "/js/sortable.js",
+    "/resources/assets/js/popper.js": "/resources/assets/js/popper.js"
 }
