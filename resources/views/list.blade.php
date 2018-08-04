@@ -24,4 +24,8 @@
 
         </div>
     </div>
+    <script type="application/javascript">
+        var el = document.getElementsByClassName('card');
+        var sortable = Sortable.create(el);
+    </script>
 @endsection

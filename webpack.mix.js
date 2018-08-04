@@ -17,24 +17,18 @@ mix
         'resources/assets/js/bootstrap/bootstrap.min.js',
         'resources/assets/js/app.js',
         'resources/assets/js/state.js',
-        'resources/assets/js/task.js'
+        'resources/assets/js/task.js',
+        'resources/assets/js/Sortable.js'
     ], 'public/js/app.js')
     .sass('resources/assets/sass/app.scss', 'public/css');
 
 
 mix.copyDirectory('node_modules/bootstrap/dist/js', 'resources/assets/js/bootstrap')
-    .copyDirectory('node_modules/jquery/dist/', 'resources/assets/js/jquery')
-    .copyDirectory('node_modules/muuri/dist/', 'resources/assets/js/muuri');
+    .copyDirectory('node_modules/jquery/dist/', 'resources/assets/js/jquery');
 
 
 mix.copyDirectory('node_modules/bootstrap/dist/css', 'resources/assets/css/bootstrap');
 
-mix.copy('node_modules/popper.js/dist/popper.js', 'resources/assets/js/popper.js/');
+mix.copy('node_modules/popper.js/dist/popper.js', 'resources/assets/js/popper.js')
+    .copy('node_modules/sortablejs/Sortable.js', 'resources/assets/js/Sortable.js');
 
-
-// mix.js('resources/assets/js/jquery/jquery.js', 'public/js')
-//     .js('resources/assets/js/bootstrap/bootstrap.js', 'public/js')
-//     .js('resources/assets/js/muuri/muuri.js', 'public/js');
-
-
-// mix.copyDirectory('assets/img', 'public/img');
