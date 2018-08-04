@@ -19,9 +19,6 @@ mix
         'resources/assets/js/state.js',
         'resources/assets/js/task.js'
     ], 'public/js/app.js')
-    .js([
-        'resources/assets/js/Sortable.js'
-    ], 'public/js/sortable.js')
     .sass('resources/assets/sass/app.scss', 'public/css');
 
 
@@ -32,5 +29,4 @@ mix.copyDirectory('node_modules/bootstrap/dist/js', 'resources/assets/js/bootstr
 mix.copyDirectory('node_modules/bootstrap/dist/css', 'resources/assets/css/bootstrap');
 
 mix.copy('node_modules/popper.js/dist/popper.js', 'resources/assets/js/popper.js');
-    // .copy('node_modules/sortablejs/Sortable.js', 'resources/assets/js/Sortable.js');
 

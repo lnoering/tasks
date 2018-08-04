@@ -8,13 +8,12 @@
                 <div class="task-items">
                     @foreach($tasks as $key => $task)
                         @if($task->state_id == $state->id)
-                            <li>
+                            <li class="task">
                                 <h3>{{$task->title}}</h3>
                                 <p>{{$task->description}}</p>
                             </li>
                             @unset($tasks[$key])
                         @endif
-                            <!-- asauhsahu -->
                     @endforeach
                 </div>
                 {{ Form::button(__('task.more'),['id'=>'addTask', 'data-id' => $state->id, 'data-url' => URL::to('/').'/task/insert']) }}
@@ -37,7 +36,7 @@
 
         [].forEach.call(byId('tasks').getElementsByClassName('task-items'), function (el){
             Sortable.create(el, {
-                group: 'task',
+                group: 'gtask',
                 animation: 150
             });
         });
