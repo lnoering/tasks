@@ -13,6 +13,13 @@ You can run with docker-compose: https://github.com/lnoering/tasks_compose
 
 In project Folder.
 
+- Create database (tasks)
+
+- Run Migrations
+```bash
+    php artisan migrate --seed
+```
+
 - composer
 ```bash
     composer install
@@ -24,10 +31,13 @@ In project Folder.
     npm install --save-dev cross-env        (required to npm run dev)
     npm install jquery
     npm install botstrap
-    npm install poppers.js                  (required do bootstrap)    
-    npm install muuri                       (lib drag and frop)
+    npm install poppers.js                  (required do bootstrap)  
 ```
 
+> Libs
+- Using to Drag (Column and Task) - https://github.com/RubaXa/Sortable
+    Obs.: When used npm to generate, does not work.
+    
 > To Do List
 
 - js of task.
