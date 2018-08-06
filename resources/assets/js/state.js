@@ -9,15 +9,25 @@ var StateClass = function(options){
     var root = this;
 
     this.construct = function(options){
-        alert(options.btnAddMore);
         $.extend(vars , options);
-        $('body').delegate(vars.btnAddMore, "click", addTask);
+        $('body').delegate(vars.btnAddMore, "click", addState);
+
+        Sortable.create(document.getElementById('tasks'), {
+            animation: 150,
+            draggable: '.task-group',
+            handle: '.task-group-name',
+            onUpdate: movedState
+        });
     };
 
-    var addTask = function(event){
+    var addState = function(event){
         var element = event.target;
         var id=$(element).attr('id');
-        alert("ID:"+id);
+    }
+
+    var movedState = function(event){
+        var element = event.target;
+        console.log($(element));
     }
 
     this.construct(options);

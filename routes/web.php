@@ -12,8 +12,15 @@
 */
 
 Route::get('/', 'TaskController@index');
-Route::get('task/insert', 'TaskController@insert');
-Route::post('task/insertAction', 'TaskController@insertAction');
+Route::post('task/insert', 'TaskController@insert')->middleware('cors')->name('task.insert');
+//Route::post('task/insert', ['middleware' => 'cors',function() {
+//    return __FILE__;
+//}]);
+//Route::get('task/insert', ['middleware' => 'cors',function() {
+//    return __FILE__;
+//}]);
+Route::post('task/insertAction', 'TaskController@insertAction')->middleware('cors')->name('task.add');
+Route::post('task/update', 'TaskController@update')->name('task.update');
 
 Route::get('state/insert', 'StateController@insert');
 Route::post('state/insertAction', 'StateController@insertAction');

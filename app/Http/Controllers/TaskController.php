@@ -29,16 +29,22 @@ class TaskController extends Controller
         } else {
             $data['state_id'] = $request['state_id'];
         }
-        return view('task/form',$data);
+
+        $response = array('success'=>1,'message'=>view('task/form',$data)->render());
+
+        return response()
+            ->json($response);
     }
 
     public function insertAction(Request $request) {
-        $response = array('success'=>1,'message'=>__('task.insertSuccess'));
+        $response = array('success'=>1,'message'=>__('task.insertSuccess'),'id'=>$request['state_id']);
 
         try {
             $task = new Task();
 
-            $documents = $task->create($request->all());
+            $task = $task->create($request->all());
+
+            $response['data'] = view('task/singleList',['task' => $task])->render();
 
         } catch (Exception $e) {
             $response['success'] = 0;
@@ -50,8 +56,11 @@ class TaskController extends Controller
             ->json($response);
     }
 
-
     public function edit() {
+
+    }
+
+    public function update() {
 
     }
 

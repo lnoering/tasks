@@ -16,12 +16,3 @@ window.Popper = require('popper.js');
 window.$ = window.jQuery = require('jquery');
 
 require('./bootstrap/bootstrap.js');
-
-window.Vue = require('vue');
-
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
-window.onload = function () {
-    const app = new Vue({
-        el: '#app'
-    });
-};
