@@ -30505,7 +30505,7 @@ var TaskClass = function TaskClass(options) {
         }).done(function (data) {
             $.featherlight.close();
             if (data.success) {
-                $("ul[id=" + data.id + "] div li").last().append(data.data);
+                $("ul[id=" + data.id + "] div").last().append(data.data);
             } else {
                 $.featherlight(data.message);
             }
