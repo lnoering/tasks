@@ -10,7 +10,13 @@ return [
     'placeholderFinishedAt' => '10/02/2019',
     'Save' => 'Salvar',
     'Update' => 'Atualizar',
-    'insertSuccess' => 'Tarefa criada com Sucesso.',
-    'insertError' => 'Erro ao tentar criar Tarefa.',
+    'insertSuccess' => 'Tarefa criada com sucesso.',
+    'insertError' => 'Erro ao tentar criar tarefa.',
     'more' => 'Adicionar Novo',
+    'remove' => 'Remover',
+    'edit' => 'Editar',
+    'removeSuccess' => 'Tarefa removida com sucesso.',
+    'removeError' => 'Erro ao tentar remover a tarefa.',
+    'updateSuccess' => 'Tarefa atualizada com sucesso.',
+    'updateError' => 'Erro ao atualizar tarefa.'
 ];

@@ -1,20 +1,17 @@
-@extends('dashboard')
-
-@section('content')
 <div>
-    @if(Request::is('/edit/'))
-        {{ Form::model($task, ['method' => 'PATH', 'url' => 'state/update/'.$task->id]) }}
+    @if(empty($state->id))
+        {{ Form::model($state, ['id' => 'stateSubmit', 'method' => 'PATH', 'url' => route('state.insert')]) }}
     @else
-        {{ Form::open(['url' => 'state/insertAction']) }}
+        {{ Form::open(['id' => 'stateSubmit', 'url' => route('state.update')]) }}
     @endif
     {{ Form::label('name', __('state.name'), ['class' => '']) }}
-    {{ Form::text('name', null, ['placeholder' => __('state.placeholderName')]) }}
+    {{ Form::text('name', $state->name, ['placeholder' => __('state.placeholderName')]) }}
 
-    {{ Form::text('position', null , ['hidden' => 'hidden']) }}
+    {{ Form::text('position', $state->position , ['hidden' => 'hidden']) }}
 
-    @if(Request::is('/edit/'))
-        {{ Form::submit(__('task.Update')) }}
+    @if(empty($state->id))
+        {{ Form::submit(__('state.Update')) }}
     @else
-        {{ Form::submit(__('task.Save')) }}
+        {{ Form::submit(__('state.Save')) }}
     @endif
 </div>

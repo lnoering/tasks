@@ -3,14 +3,17 @@
 var StateClass = function(options){
 
     var vars = {
-        btnAddMore  : '#addState'
+        btnAddMore  : '#addState',
+        btnSubmit   : '#stateSubmit',
     };
 
     var root = this;
 
     this.construct = function(options){
         $.extend(vars , options);
-        $('body').delegate(vars.btnAddMore, "click", addState);
+
+        $(document).delegate(vars.btnAddMore, "click", add);
+        $(document).delegate(vars.btnSubmit, "submit", submit);
 
         Sortable.create(document.getElementById('tasks'), {
             animation: 150,
@@ -20,10 +23,56 @@ var StateClass = function(options){
         });
     };
 
-    var addState = function(event){
+    var add = function(event) {
         var element = event.target;
-        var id=$(element).attr('id');
+        var stateId=$(element).data('id');
+        var url = $(element).data('url');
+
+        $.ajax({
+            data: {
+                '_token': $('meta[name=csrf-token]').attr('content')
+            },
+            method: "POST",
+            url: url,
+        })
+        .done(function( data ) {
+            if(data.success) {
+                $.featherlight(data.message);
+            } else {
+                $.featherlight(data.message);
+            }
+        });
     }
+
+    var submit = function(event) {
+        event.preventDefault();
+        var element = event.target;
+        var url = $(element).attr('action');
+        var data = $(element).serialize();
+
+        $.ajax({
+            data: data,
+            method: "POST",
+            url: url,
+        })
+        .done(function( data ) {
+            $.featherlight.close();
+            if(data.success) {
+                if(url.indexOf("insert") > -1) {
+                    $("div[id=tasks] ul").last().before(data.data);
+                } else {
+                    //TODO - fazer o replace do texto apenas.
+                    // $("ul[id=" + data.id + "] div li[data-id=" + data.task_id + "]").replaceWith(data.data);
+                }
+            } else {
+                var msg = data.message;
+                if(data.exception) {
+                    msg += "</br>"+data.exception;
+                }
+                $.featherlight(msg);
+            }
+        }.bind(this));
+    };
 
     var movedState = function(event){
         var element = event.target;

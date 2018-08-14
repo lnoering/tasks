@@ -8,5 +8,5 @@ class State extends Model
 {
     protected $table = 'state';
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'position'];
 }

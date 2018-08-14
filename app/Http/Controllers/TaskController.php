@@ -15,28 +15,33 @@ class TaskController extends Controller
                         'states'=>State::orderBy('position','asc')->get(),
                         'tasks'=>Task::orderByRaw('updated_at - created_at asc')->get()
                     );
-//        $data = array('tasks'=>Task::all()->groupBy('state.position','asc'));
 
         return view('list',$data);
     }
 
-
-    public function insert(Request $request) {
+    public function view(Request $request) {
         $data = array('state_id'=>null);
-        if(empty(trim($request['state_id']))) {
-            //TODO - implementar create de state
-            $data['state_id'] = 2;
-        } else {
-            $data['state_id'] = $request['state_id'];
-        }
 
-        $response = array('success'=>1,'message'=>view('task/form',$data)->render());
+        try {
+            if ($request->has('state_id')) {
+                $data['task'] = new Task();
+                $data['task']->state_id = $request['state_id'];
+            } else {
+                $data['task'] = Task::findOrFail($request['task_id']);
+            }
+
+            $response = array('success' => 1, 'message' => view('task/form', $data)->render());
+        } catch (\Exception $e) {
+            $response['success'] = 0;
+            $response['message'] = "<p>".__('task.insertError')."</p>";
+            $response['exception'] = "<p>".$e->getMessage()."</p>";
+        }
 
         return response()
             ->json($response);
     }
 
-    public function insertAction(Request $request) {
+    public function insert(Request $request) {
         $response = array('success'=>1,'message'=>__('task.insertSuccess'),'id'=>$request['state_id']);
 
         try {
@@ -46,22 +51,56 @@ class TaskController extends Controller
 
             $response['data'] = view('task/singleList',['task' => $task])->render();
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $response['success'] = 0;
-            $response['message'] = __('task.insertError');
-            $response['exception'] = $e->getMessage();
+            $response['message'] = "<p>".__('task.insertError')."</p>";
+            $response['exception'] = "<p>".$e->getMessage()."</p>";
         }
 
         return response()
             ->json($response);
     }
 
-    public function edit() {
+    public function update(Request $request) {
+        $response = array('success'=>1,'message'=>"<p>".__('task.updateSuccess')."</p>",'id'=>$request['state_id'], 'task_id'=>$request['id']);
 
+        try {
+            if (!empty(trim($request['id']))) {
+                $task = Task::findOrFail($request['id']);
+                $task->update($request->all());
+                $response['data'] = view('task/singleList',['task' => $task])->render();
+            } else {
+                $response['success'] = 0;
+                $response['message'] = "<p>".__('task.updateError')."</p>";
+            }
+        } catch (\Exception $e) {
+            $response['success'] = 0;
+            $response['message'] = "<p>".__('task.updateError')."</p>";
+            $response['exception'] = "<p>".$e->getMessage()."</p>";
+        }
+
+        return response()
+            ->json($response);
     }
 
-    public function update() {
+    public function delete(Request $request) {
+        $response = array('success'=>1,'message'=>"<p>".__('task.removeSuccess')."</p>",'id'=>$request['state_id']);
 
+        try {
+            if (!empty(trim($request['id']))) {
+                Task::findOrFail($request['id'])->delete();
+            } else {
+                $response['success'] = 0;
+                $response['message'] = "<p>".__('task.removeError')."</p>";
+            }
+        } catch (\Exception $e) {
+            $response['success'] = 0;
+            $response['message'] = "<p>".__('task.removeError')."</p>";
+            $response['exception'] = "<p>".$e->getMessage()."</p>";
+        }
+
+        return response()
+            ->json($response);
     }
 
 

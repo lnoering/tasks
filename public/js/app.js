@@ -30428,14 +30428,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var StateClass = function StateClass(options) {
 
     var vars = {
-        btnAddMore: '#addState'
+        btnAddMore: '#addState',
+        btnSubmit: '#stateSubmit'
     };
 
     var root = this;
 
     this.construct = function (options) {
         $.extend(vars, options);
-        $('body').delegate(vars.btnAddMore, "click", addState);
+
+        $(document).delegate(vars.btnAddMore, "click", add);
+        $(document).delegate(vars.btnSubmit, "submit", submit);
 
         Sortable.create(document.getElementById('tasks'), {
             animation: 150,
@@ -30445,9 +30448,53 @@ var StateClass = function StateClass(options) {
         });
     };
 
-    var addState = function addState(event) {
+    var add = function add(event) {
         var element = event.target;
-        var id = $(element).attr('id');
+        var stateId = $(element).data('id');
+        var url = $(element).data('url');
+
+        $.ajax({
+            data: {
+                '_token': $('meta[name=csrf-token]').attr('content')
+            },
+            method: "POST",
+            url: url
+        }).done(function (data) {
+            if (data.success) {
+                $.featherlight(data.message);
+            } else {
+                $.featherlight(data.message);
+            }
+        });
+    };
+
+    var submit = function submit(event) {
+        event.preventDefault();
+        var element = event.target;
+        var url = $(element).attr('action');
+        var data = $(element).serialize();
+
+        $.ajax({
+            data: data,
+            method: "POST",
+            url: url
+        }).done(function (data) {
+            $.featherlight.close();
+            if (data.success) {
+                if (url.indexOf("insert") > -1) {
+                    $("div[id=tasks] ul").last().before(data.data);
+                } else {
+                    //TODO - fazer o replace do texto apenas.
+                    // $("ul[id=" + data.id + "] div li[data-id=" + data.task_id + "]").replaceWith(data.data);
+                }
+            } else {
+                var msg = data.message;
+                if (data.exception) {
+                    msg += "</br>" + data.exception;
+                }
+                $.featherlight(msg);
+            }
+        }.bind(this));
     };
 
     var movedState = function movedState(event) {
@@ -30466,20 +30513,23 @@ $(document).ready(function () {
 /* 11 */
 /***/ (function(module, exports) {
 
-//TODO - implementar addicionar/update/delete task
-
 var TaskClass = function TaskClass(options) {
 
     var vars = {
-        btnAddMore: '#addTask'
+        btnAddMore: '#addTask',
+        btnSubmit: '#taskSubmit',
+        btnRemove: '#removeTask',
+        btnEdit: '#editTask'
     };
 
     var root = this;
 
     this.construct = function (options) {
         $.extend(vars, options);
-        $(document).delegate(vars.btnAddMore, "click", addTask);
-        $(document).delegate('#taskSubmit', "submit", taskSubmit);
+        $(document).delegate(vars.btnSubmit, "submit", submit);
+        $(document).delegate(vars.btnAddMore, "click", add);
+        $(document).delegate(vars.btnRemove, "click", remove);
+        $(document).delegate(vars.btnEdit, "click", edit);
 
         [].forEach.call(document.getElementById('tasks').getElementsByClassName('task-items'), function (el) {
             Sortable.create(el, {
@@ -30491,9 +30541,29 @@ var TaskClass = function TaskClass(options) {
         });
     };
 
-    var taskSubmit = function taskSubmit(event) {
+    var add = function add(event) {
+        var element = event.target;
+        var stateId = $(element).data('id');
+        var url = $(element).data('url');
+
+        $.ajax({
+            data: {
+                '_token': $('meta[name=csrf-token]').attr('content'),
+                state_id: stateId
+            },
+            method: "POST",
+            url: url
+        }).done(function (data) {
+            if (data.success) {
+                $.featherlight(data.message);
+            } else {
+                $.featherlight(data.message);
+            }
+        });
+    };
+
+    var submit = function submit(event) {
         event.preventDefault();
-        console.log('aaaa');
         var element = event.target;
         var url = $(element).attr('action');
         var data = $(element).serialize();
@@ -30505,22 +30575,53 @@ var TaskClass = function TaskClass(options) {
         }).done(function (data) {
             $.featherlight.close();
             if (data.success) {
-                $("ul[id=" + data.id + "] div").last().append(data.data);
+                if (url.indexOf("insert") > -1) {
+                    $("ul[id=" + data.id + "] div").last().append(data.data);
+                } else {
+                    $("ul[id=" + data.id + "] div li[data-id=" + data.task_id + "]").replaceWith(data.data);
+                }
             } else {
-                $.featherlight(data.message);
+                var msg = data.message;
+                if (data.exception) {
+                    msg += "</br>" + data.exception;
+                }
+                $.featherlight(msg);
             }
-        });
+        }.bind(this));
     };
 
-    var addTask = function addTask(event) {
+    var remove = function remove(event) {
         var element = event.target;
-        var stateId = $(element).data('id');
+        var taskId = $(element).data('id');
         var url = $(element).data('url');
 
         $.ajax({
             data: {
                 '_token': $('meta[name=csrf-token]').attr('content'),
-                state_id: stateId
+                id: taskId
+            },
+            method: "POST",
+            url: url
+        }).done(function (data) {
+            if (data.success) {
+                console.log($(element).parents('li'));
+                $(element).parents('li').remove();
+                $.featherlight(data.message);
+            } else {
+                $.featherlight(data.message);
+            }
+        }.bind(this));
+    };
+
+    var edit = function edit(event) {
+        var element = event.target;
+        var taskId = $(element).data('id');
+        var url = $(element).data('url');
+
+        $.ajax({
+            data: {
+                '_token': $('meta[name=csrf-token]').attr('content'),
+                task_id: taskId
             },
             method: "POST",
             url: url

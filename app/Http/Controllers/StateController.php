@@ -8,29 +8,64 @@ use Illuminate\Http\Request;
 class StateController extends Controller
 {
 
-    public function insert() {
-        return view('state/form');
-    }
-
-    public function insertAction(Request $request) {
-        $response = array('success'=>1,'message'=>__('state.insertSuccess'));
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function view(Request $request) {
+        $data = array('state_id'=>null);
 
         try {
-            $state = new State();
+            if ($request->has('id')) {
+                $data['state'] = State::findOrFail($request['id']);
+            } else {
+                $data['state'] = new State();
+            }
 
-            $documents = $state->create($request->all());
-
-        } catch (Exception $e) {
+            $response = array('success' => 1, 'message' => view('state/form', $data)->render());
+        } catch (\Exception $e) {
             $response['success'] = 0;
-            $response['message'] = __('state.insertError');
-            $response['exception'] = $e->getMessage();
+            $response['message'] = "<p>".__('task.insertError')."</p>";
+            $response['exception'] = "<p>".$e->getMessage()."</p>";
         }
 
         return response()
             ->json($response);
     }
 
-    public function edit() {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function insert(Request $request) {
+        $response = array('success'=>1,'message'=>'<p>'.__('state.insertSuccess').'</p>');
+
+        try {
+            $maxPosition = State::max('position');
+            $maxPosition ++;
+
+            $state = new State();
+            $request['position'] = $maxPosition;
+            //TODO - pegar o ultimo valor do (position + 1) para setar no novo state.
+            $state = $state->create($request->all());
+            $response['data'] = view('state/singleList',['state' => $state])->render();
+
+        } catch (\Exception $e) {
+            $response['success'] = 0;
+            $response['message'] = "<p>".__('state.insertError')."</p>";
+            $response['exception'] = "<p>".$e->getMessage()."</p>";
+        }
+
+        return response()
+            ->json($response);
+    }
+
+    public function update() {
+
+    }
+
+    public function delete() {
 
     }
 }

@@ -7,4 +7,5 @@ return [
     'insertSuccess' => 'Status criado com Sucesso.',
     'insertError' => 'Erro ao tentar criar Status.',
     'more' => 'Adicionar Novo',
+    'remove' => 'Remover',
 ];
